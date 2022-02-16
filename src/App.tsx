@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import PaymentMethods, { Status } from "./paymentMethods/pm";
 
 const authorization =
-  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NTY0ZDNkNi1lYjU0LTQ3NGUtODA2Yi04M2M2ZmM3MTIwODYiLCJqdGkiOiJiYTVkZDM2MWI4YzI0OGZjOWU2YWJkOGMzMTE0YjRhNjY5ZTU4ZThkMWU4Yjk3MGNkNzY1ZjgyNDQzNThmN2M5MWZmZjJmNjIwNWRjNjgzZCIsImlhdCI6MTY0MjY5ODA5Mi40ODUzOTgsIm5iZiI6MTY0MjY5ODA5Mi40ODU0MDEsImV4cCI6MTY3NDIzNDA5Mi4zODkxMjEsInN1YiI6IjQiLCJzY29wZXMiOlsiKiJdfQ.j7jE6kMZtEaIuOn9PRkC04aF6-XqZ46jf8m--ebOIYIwenspZjZbTO_a3MYXu1tYaDIPps-GvROEyNQwHeRKQ_8GYUbydJX8jwjZEJnlKuUF457rnTIEGY8MdrRKOB8_bch9qGqoBEoeDZkcHjc9OJuwKlJWJo6uhkDdwk-pl4n3xZ7VRXvboZ5d5UO2j2qfxrp5s7UDtz_qp5R-6tBLQPw1xnU5Dj1s8Qb2uq5mWjr0xsWRJFNN7lb1VtJ4yasl5OZ-rPInyNIZ6GlXcSCUw39bZizzG4tlih9IIqJpQFDqbCfyp73xuSerPqjbpAwl53C0wl_3IzXUS4IUR0B5BpOIb6MDrae2p2YicFbsKx-tgz_9Sugv8k7NuEoswyklgdXq_wbJSRoXyORhHyerzwF18XNhuws0iTOqlGnWta51NpLGfJaCH4560o8VFZ_8Gs0930UqgXUxziZL3UBRyjR_-TIgjsoRaRKJ-2osFqPqhMOPfQ2RLlaWfkfWcCsWiyKqRLGRd_SJESn7T6qIS3vcfe5swOCVrpllkrs8U6YkjqE_293WsW5MPwfEIdPsgLxlUgsjsrI4oHDOzwIVlDG97-DOeOzf1L7prbHstjWNc_Ebgp-WccfgAeiC5F9jEHXF6Xl4iX7blQok8AGhGiUYmmQzfL5GElT_OUkt3Wc";
+  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NTVhNDhiMC1jMDc1LTQ3Y2MtYTZjNi1iNzEyMjViZTRiZWEiLCJqdGkiOiJmMzA5MmEyOWY3YTdhODg0ZWVlNTZiMWM2YzUyZGFjMzgxOWFiNDk4ZjdjY2NlYTVkOTUxMTE0ZTkwMzhlNjUyZjgxMDFkZmYwM2VhNDc3NiIsImlhdCI6MTY0NDk5NjYwOS44NzQ3NjUsIm5iZiI6MTY0NDk5NjYwOS44NzQ3NjgsImV4cCI6MTY3NjUzMjYwOS44Njg1NTEsInN1YiI6IjI4OCIsInNjb3BlcyI6WyIqIl19.loXmRbgDljLQbuJbxuAlBswIfWcKX2cU1NWuwvrc_PkkBN3WfsCUy0d6OZ-4taH5SpEYLdH1jLrbgTmCgia3y3vpDLwjt4HCUiJtdqFgyTqL5DUINCoyERAm7cQLF47cefHKvCwyeRytHLNVHSC1_4BsfB7d_ljBhONzARxEEXPX7PkmMwGcnF9TLkbqXrcHfT7GbBDh8AydJpJRuyX8B3Mbg83VNchQueuw5IDc-aLhv5WsqcCcI3N97a0JzgFoAYyov39sl_ER_cxG5dH4O3i1RZHjSujXrZBnH-Ot_eNN_ctH3GDC8lqNr_T2i1BdaPFLTqhKVOqaO4iDClMS5fakeK53Ew1SUU3qCwkJF7AtwQ3k3ghVkXQ4c3OFZwBrifvg1_0XhZrG5FZ0Fixgb8PIATnvnh7ZXm7L54v1ClmfG4Cx1DhWMnlonqAdAva5SNNsYJP4Odt4BdPap981k2QMAuUTDPRhBA3FvIddeVgFTP_D5gs8bW5DFsJ6oAtDTWPLqNp4WogC-UP3_37hRoBrdgUNO0rDj0oZlw4894_w-DCxT1-6Q-emx--DEudfWBZkQoCzRbe6aGg62MMOpb0U4aNXKD5KgH7bqiu2kLXIZZzKRF_QZUIJsirYJ2Hp6krxR3wVqCievC7o2lqE7V7aj7nyqVrVp4sabN-I5tY";
 declare global {
   interface Window {
     TwoPayClient: any;
@@ -43,11 +43,10 @@ function App() {
   const [isRedirect, setIsRedirect] = useState(false);
 
   const data1 = useMemo(() => {
-    console.log("memo");
     return PaymentMethods.getInstance(
       {
-        "X-CART-ID": 20,
-        "Remote-host": "client1.ucraft.loc",
+        "X-CART-ID": 2,
+        "Remote-host": "poi.ucraft.loc",
         authorization,
       },
       "http://uc-commerce-api.ucraft.loc"

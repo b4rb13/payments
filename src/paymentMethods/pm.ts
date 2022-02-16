@@ -80,7 +80,6 @@ class PaymentMethods {
       try {
         this.status = Status.PENDING;
 
-        console.log(options, paymentMethod, "opt");
         let res = await this.placeOrderMutation({
           input: {
             paymentMethod:
@@ -108,14 +107,12 @@ class PaymentMethods {
       data.paymentGatewayInitializationConfig
     )
       .then((res: string) => {
-        console.log(res);
         this.handlePlaceOrder = this.placeOrder(
           PaymentMethod[paymentMethodName as keyof typeof PaymentMethod],
           false,
           res
         );
 
-        console.log(this.handlePlaceOrder, "this");
 
         return;
       })
@@ -129,7 +126,6 @@ class PaymentMethods {
     isRedirect: boolean
   ) => {
     if (paymentMethod === 'cashondelivery') {
-      console.log("aaa");
       this.handlePlaceOrder = this.placeOrder(paymentMethod, false);
       return;
     }
@@ -168,7 +164,6 @@ class PaymentMethods {
     return async () => {
       await this.placeOrder(paymentMethod, true)();
 
-      console.log(this.orderResult.data.placeOrder.redirectUrl);
       if (this.orderResult.data.placeOrder.redirectMethod === "GET") {
         window.open(this.orderResult.data.placeOrder.redirectUrl, "_top");
         return;

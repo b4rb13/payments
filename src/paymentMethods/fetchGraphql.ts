@@ -7,7 +7,7 @@ const defaultHeaders = {
 const fetchGraphql =
   (query: string, url: string, headers: any | undefined = defaultHeaders) =>
   (variables?: any) => {
-    console.log(variables, "LLLLOO");
+
     return fetch(`${url}/graphql`, {
       method: "POST",
       headers: {
