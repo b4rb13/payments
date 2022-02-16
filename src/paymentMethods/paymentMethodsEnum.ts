@@ -2,13 +2,16 @@ export enum PaymentMethod {
   /** Paypal smart button payment method. */
   PaypalSmartButton = "PAYPAL_SMART_BUTTON",
   /** Cash on delivery payment method. */
-  CashOnDelivery = "CASH_ON_DELIVERY",
+  // CashOnDelivery = "cashondelivery",
+  cashondelivery = "CASH_ON_DELIVERY",
   /** Money transfer payment method. */
   MoneyTransfer = "MONEY_TRANSFER",
   /** Paypal standard payment method. */
   PaypalStandard = "PAYPAL_STANDARD",
   /** Brain tree payment method. */
   braintree = "BRAIN_TREE",
+
+  BRAIN_TREE = "BRAIN_TREE",
   /** Recurring stripe payment method. */
   RecurringStripePayment = "RECURRING_STRIPE_PAYMENT",
   /** Stripe connect payment method. */

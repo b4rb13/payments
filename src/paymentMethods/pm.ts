@@ -67,26 +67,35 @@ class PaymentMethods {
     );
   }
 
+  public getStatus = () => {
+    return this.status;
+  };
+
   private placeOrder(
     paymentMethod: string,
     isRedirect: boolean,
-    options?: () => string
+    options?: string
   ) {
     return async () => {
       try {
         this.status = Status.PENDING;
 
+        console.log(options, paymentMethod, "opt");
         let res = await this.placeOrderMutation({
           input: {
-
-            paymentMethod:PaymentMethod[paymentMethod as keyof typeof PaymentMethod],
+            paymentMethod:
+              PaymentMethod[paymentMethod as keyof typeof PaymentMethod],
             ...(!isRedirect && {
-              options: options?.(),
+              options,
             }),
           },
         });
         this.orderResult = await res.json();
-        this.status = Status.SUCCESS;
+        if ("errors" in this.orderResult) {
+          this.status = Status.ERROR;
+        } else {
+          this.status = Status.SUCCESS;
+        }
       } catch (e) {
         console.log(e);
         this.status = Status.ERROR;
@@ -98,7 +107,7 @@ class PaymentMethods {
     packages[paymentMethodName](paymentMethodName)(
       data.paymentGatewayInitializationConfig
     )
-      .then((res: () => string) => {
+      .then((res: string) => {
         console.log(res);
         this.handlePlaceOrder = this.placeOrder(
           PaymentMethod[paymentMethodName as keyof typeof PaymentMethod],
@@ -119,14 +128,13 @@ class PaymentMethods {
     paymentMethod: string,
     isRedirect: boolean
   ) => {
+    if (paymentMethod === 'cashondelivery') {
+      console.log("aaa");
+      this.handlePlaceOrder = this.placeOrder(paymentMethod, false);
+      return;
+    }
     if (isRedirect) {
-      await this.placeOrder(paymentMethod, true)();
-      console.log("tttt", this.orderResult);
-
-      this.handlePlaceOrder = this.handlePlaceOrderRedirect(
-        this.orderResult.data.placeOrder.redirectUrl as any,
-        this.orderResult.data.placeOrder.redirectMethod
-      );
+      this.handlePlaceOrder = this.handlePlaceOrderRedirect(paymentMethod);
 
       return;
     }
@@ -156,17 +164,21 @@ class PaymentMethods {
     }
   };
 
-  private handlePlaceOrderRedirect(url: string, method: string) {
-    console.log(url, method, 'method');
+  private handlePlaceOrderRedirect(paymentMethod: string) {
     return async () => {
-      if (method === "GET") {
-        window.location.href = url;
+      await this.placeOrder(paymentMethod, true)();
+
+      console.log(this.orderResult.data.placeOrder.redirectUrl);
+      if (this.orderResult.data.placeOrder.redirectMethod === "GET") {
+        window.open(this.orderResult.data.placeOrder.redirectUrl, "_top");
         return;
       }
-      if (method === "POST") {
-        await fetch(url, { method })
+      if (this.orderResult.data.placeOrder.redirectMethod === "POST") {
+        await fetch(this.orderResult.data.placeOrder.redirectUrl, {
+          method: this.orderResult.data.placeOrder.redirectMethod,
+        })
           .then(() => {
-            window.location.href = url;
+            window.location.href = this.orderResult.data.placeOrder.redirectUrl;
           })
           .catch((err) => {
             console.log(err);

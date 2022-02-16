@@ -1,5 +1,5 @@
 import "./App.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PaymentMethods, { Status } from "./paymentMethods/pm";
 
 const authorization =
@@ -38,25 +38,32 @@ const data = {
 
 function App() {
   const [selected, setSelected] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<Status | null>(null);
+  const [isRedirect, setIsRedirect] = useState(false);
 
-  const data1 =
-    useMemo(() => {
-      console.log("memo");
-      return PaymentMethods.getInstance(
-        {
-          "X-CART-ID": 12,
-          "Remote-host": "client1.ucraft.loc",
-          authorization,
-        },
-        "http://uc-commerce-api.ucraft.loc"
-      );
-    }, [selected]);
-
+  const data1 = useMemo(() => {
+    console.log("memo");
+    return PaymentMethods.getInstance(
+      {
+        "X-CART-ID": 20,
+        "Remote-host": "client1.ucraft.loc",
+        authorization,
+      },
+      "http://uc-commerce-api.ucraft.loc"
+    );
+  }, [selected]);
 
   const handleSelect = (method: string, isRedirect: boolean) => {
     setSelected(method);
-    data1.handleSelectPaymentMethod(method, isRedirect);
+    setIsRedirect(isRedirect);
   };
+
+  useEffect(() => {
+    if (selected) {
+      data1.handleSelectPaymentMethod(selected, isRedirect);
+    }
+  }, [selected, isRedirect]);
 
   return (
     <div className="App">
@@ -64,6 +71,7 @@ function App() {
         {data.data.paymentMethods.paymentMethods.map((p) => (
           <li
             key={p.method}
+            className={selected === p.method ? "active" : ""}
             onClick={() => {
               handleSelect(p.method, p.action === "redirect");
             }}
@@ -75,14 +83,29 @@ function App() {
       </ul>
 
       <button
-        onClick={() => {
-          console.log(data1, "handlePlaceOrder");
-
-          data1.handlePlaceOrder?.();
+        disabled={!selected}
+        onClick={async () => {
+          try {
+            setLoading(true);
+            await data1.handlePlaceOrder?.();
+          } catch (e) {
+            console.log(e);
+          } finally {
+            setLoading(false);
+            setStatus(data1.getStatus());
+          }
         }}
       >
-        Pay {selected}
+        {loading ? "Loading ..." : `Pay ${selected}`}
       </button>
+
+      <br />
+      <br />
+      <div
+        className={`status-${status && (status === 1 ? "ERROR" : "SUCCESS")}`}
+      >
+        {status && (status === 1 ? "ERROR" : "SUCCESS")}
+      </div>
     </div>
   );
 }
