@@ -19,17 +19,17 @@ const data = {
         {
           method: "cashondelivery",
           methodTitle: "Cash On Delivery",
-          action: null,
+          interactionType: null,
         },
         {
           method: "braintree",
           methodTitle: "Braintree",
-          action: "dropin",
+          interactionType: "drop-in",
         },
         {
           method: "ameria",
           methodTitle: "Ameria Bank",
-          action: "redirect",
+          interactionType: "redirection",
         },
       ],
     },
@@ -45,7 +45,7 @@ function App() {
   const data1 = useMemo(() => {
     return PaymentMethods.getInstance(
       {
-        "X-CART-ID": 2,
+        "X-CART-ID": 1,
         "Remote-host": "poi.ucraft.loc",
         authorization,
       },
@@ -72,7 +72,7 @@ function App() {
             key={p.method}
             className={selected === p.method ? "active" : ""}
             onClick={() => {
-              handleSelect(p.method, p.action === "redirect");
+              handleSelect(p.method, p.interactionType === "redirection");
             }}
           >
             {p.methodTitle}

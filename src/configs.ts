@@ -8,7 +8,7 @@ export enum PaymentMethods {
   EvocaBank = "evoca",
   Stripe = "stripe",
 }
-export type ActionType = "dropin" | "redirect";
+export type ActionType = "drop-in" | "redirection";
 
 interface ConfigType {
   name: PaymentMethods;
@@ -23,35 +23,35 @@ type ConfigsType = Array<ConfigType>;
 export const paymentConfigs: ConfigsType = [
   {
     name: PaymentMethods.PayPal,
-    type: "dropin",
+    type: "drop-in",
   },
   {
     name: PaymentMethods.BrainTree,
-    type: "dropin",
+    type: "drop-in",
   },
   {
     name: PaymentMethods.TwoCheckout,
-    type: "dropin",
+    type: "drop-in",
   },
   {
     name: PaymentMethods.AmeriaBank,
-    type: "redirect",
+    type: "redirection",
     url: "https://google.com/",
   },
   {
     name: PaymentMethods.ConverseBank,
-    type: "redirect",
+    type: "redirection",
   },
   {
     name: PaymentMethods.ArdshinBank,
-    type: "redirect",
+    type: "redirection",
   },
   {
     name: PaymentMethods.EvocaBank,
-    type: "redirect",
+    type: "redirection",
   },
   {
     name: PaymentMethods.Stripe,
-    type: "dropin",
+    type: "drop-in",
   },
 ];
